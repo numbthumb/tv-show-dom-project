@@ -126,6 +126,7 @@ episodeSelector.addEventListener("change", (event) => {
 
 // Outputs a drop down box that displays all shows selector
 let showSelector = document.getElementById("showSelector");
+  let sortedShows = allShows.sort(sortByName);
     for (let i = 0; i < allShows.length; i++) {
       console.log(allShows[i]);
       let option = document.createElement("option");
@@ -148,6 +149,22 @@ let showSelector = document.getElementById("showSelector");
     rootElem.textContent = "";
     createEpisodePage(url);
 })
+
+function sortByName(a, b) {
+const nameA = a.name.toLowerCase();
+const nameB = b.name.toLowerCase();
+
+let compare = 0;
+if (nameA > nameB) {
+  compare = 1;
+} else if(nameA < nameB) {
+  compare = -1;
+}
+return compare;
+}
+// let showAlphabeticalListing = allEpisodes[showSelector.value]
+// let alphabeticalArray = []
+// alphabeticalArray.sort(compare)
 
 
 window.onload = setup;
