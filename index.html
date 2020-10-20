@@ -9,11 +9,22 @@
   </head>
 
   <body>
-    <div id="root">
-    </div>
+    <select name="shows" id="showSelector">
+      <option value="Select">- All Shows -</option>
+    </select>
+    <input type="text" id="searchBar" placeholder="Search here">
+    <label for="episodes">Select episode:</label>
+    <select name="episodes" id="episodeSelector">
+      <option value="Select">- All Episodes -</option>
+    </select>
+    <div id="root"></div>
+    <button id="goBack">Back to all episodes</button>
+    
+    
 
     <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
     <script src="episodes.js"></script>
+    <script src="shows.js"></script>
 
     <!-- Loads YOUR javascript code -->
     <script src="script.js"></script>
