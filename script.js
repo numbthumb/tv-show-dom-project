@@ -1,17 +1,84 @@
-// Creates a page for episode's and episode data
+// Creates a page for episode's and show's data
 function setup() {
+  // createPageForAllShows(url);
+  // createEpisodePage(url);
+  getAllShowsData(allShows)
   // const allEpisodes = getAllEpisodes();
   // const allShows = getAllShows();
-  createEpisodePage(url);
   // getEpisodeData(allEpisodes);
   // episodeSelectionBox(allEpisodes);
 
 }
 
+// Creates the page upon opening and lists all shows
+let allShowsListing;
+// let url = 'https://api.tvmaze.com/shows';
+// const allShows = getAllShows();
+
+// Outputs page for all shows data
+function makePageForAllShows(showsList) {
+  const rootElem = document.getElementById("root");
+  rootElem.textContent = `Got ${showsList.length} show(s)`;
+}
+
+function createPageForAllShows(url) {
+  fetch(url)
+  .then(response => response.json())
+  .then(data => { allShowsListing = data; 
+  makePageForAllShows(allShowsListing)
+  getEpisodeData(allEpisodes)
+  episodeSelectionBox(allEpisodes) 
+  console.log(data)
+});
+}
+// function createPageForAllShows(url) {
+//   fetch(url)
+// }
+
+// Outputs data to the page for all shows: Show title, image, summary and a link to the original data source
+function getAllShowsData(allShowsList) {
+  const rootElem = document.getElementById("root");
+  allShowsList.forEach(shows => {
+    let createShowsName = document.createElement("p");
+    createShowsName.textContent = shows.name;
+    rootElem.appendChild(createShowsName);
+
+    let createShowImage = document.createElement("img");
+    createShowImage.addEventListener("click", (event) => {
+      url = `https://api.tvmaze.com/shows/${shows.id}/episodes`;
+      const rootElem = document.getElementById("root");
+      rootElem.textContent = " ";
+      createPageForAllShows(url);
+      createEpisodePage(url);
+    })
+    if(shows.image === null) {
+      createShowImage.src= "https://tvguide1.cbsistatic.com/www/img/tvg-showcard-placeholder.jpg";
+    }else{
+      createShowImage.src = shows.image.medium;
+    }
+    createShowsName.appendChild(createShowImage);
+
+    let summary = document.createElement("p");
+    summary.innerHTML = shows.summary;
+    createShowsName.appendChild(summary);
+  
+    let copyRight = document.createElement("a");
+    copyRight.href = "https://tvmaze.com/";
+    copyRight.textContent = "Click here for original source";
+    createShowsName.appendChild(copyRight); 
+  })
+}
+
+
+
+
+
+// Retrieve's the data for Game of thrones and creates a page for all episode's 
 let allEpisodes;
 let url = 'https://api.tvmaze.com/shows/82/episodes';
 const allShows = getAllShows();
 console.log(allShows);
+
 // Outputs page for episode data
 function makePageForEpisodes(episodeList) {
   const rootElem = document.getElementById("root");
@@ -36,6 +103,12 @@ function createAllShowsPage(url) {
 // Outputs data to the page such as: Episode title, image, summary and a link to the original data source
 function getEpisodeData (episodeList) {
   const rootElem = document.getElementById("root");
+  let allShowsButton = document.getElementById("allShows");
+  allShowsButton.addEventListener("click", (event) => {
+   let rootElem = document.getElementById("root");
+   rootElem.textContent = " ";
+   setup();
+  })
   episodeList.forEach(episode => {
   let createEpisodeName = document.createElement("p");
   createEpisodeName.textContent = episode.name;
@@ -120,6 +193,8 @@ episodeSelector.addEventListener("change", (event) => {
   // Returns user back to all episodes
   let backButton = document.getElementById("goBack");
   backButton.addEventListener("click", (event) => {
+  let rootElem = document.getElementById("root");
+  rootElem.textContent = " ";
   return setup();
   })
 })
